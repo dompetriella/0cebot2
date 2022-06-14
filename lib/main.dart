@@ -9,14 +9,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: OcebotTheme.darkTheme,
-      home: const MyHomePage(title: 'OceBot 2.0'),
+      title: 'Ocebot',
+      theme: OcebotTheme.lightTheme,
+      home: const MyHomePage(title: 'OceBot'),
     );
   }
 }
@@ -48,30 +47,43 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(mainAxisAlignment: MainAxisAlignment.center,
+          title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/snek.png',
-          height: 50,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 10,
+              width: 10,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle, color: OcebotTheme.accentColor),
+            ),
           ),
           Text(widget.title),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 10,
+              width: 10,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle, color: OcebotTheme.accentColor),
+            ),
+          ),
         ],
-      ) 
-      ),
+      )),
       body: Center(
         child: Column(
+          
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-            style: OcebotTheme.darkTheme.primaryTextTheme.headline1,
-            "No Data Yet!")
-          ],
+          children: [Text("No Data Yet!", style: OcebotTheme.lightTheme.primaryTextTheme.headline1)],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(),
         onPressed: () => showDialog(
-          barrierDismissible: false,
-          context: context, 
-          builder: (BuildContext context) => EntryForm()),
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) => EntryForm()),
         tooltip: 'Create New Entry',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
