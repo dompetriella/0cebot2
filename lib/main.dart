@@ -73,9 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
       )),
       body: Center(
         child: Column(
-          
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("No Data Yet!", style: OcebotTheme.lightTheme.primaryTextTheme.headline1)],
+          children: [
+            Image.asset('assets/images/Ocelot-export.png'),
+            Text("No Data Yet!",
+                style: OcebotTheme.lightTheme.primaryTextTheme.headline1)
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

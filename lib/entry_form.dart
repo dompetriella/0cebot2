@@ -64,7 +64,9 @@ class _EntryFormState extends State<EntryForm> {
                     onTap: () {
                       showDatePicker(
                               builder: (context, child) {
-                                return Theme(data: OcebotTheme.lightTheme, child: child!);
+                                return Theme(
+                                    data: OcebotTheme.lightTheme,
+                                    child: child!);
                               },
                               context: context,
                               initialDate: DateTime.now(),
@@ -140,15 +142,17 @@ class _EntryFormState extends State<EntryForm> {
                               ),
                             ]),
                         child: Icon(
-                            color: OcebotTheme.backgroundColor,
-                            Icons.calendar_month_rounded)),
+                          Icons.calendar_month_rounded,
+                          color: OcebotTheme.backgroundColor,
+                            )),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(12, 8, 2, 12),
                     child: SizedBox(
                       width: 100,
                       child: TextField(
-                        style: OcebotTheme.lightTheme.primaryTextTheme.displayMedium,
+                        style: OcebotTheme
+                            .lightTheme.primaryTextTheme.displayMedium,
                         textAlign: TextAlign.center,
                         controller: textEditingController,
                         onChanged: (text) {
