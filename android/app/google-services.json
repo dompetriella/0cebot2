@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "191716262966",
+    "project_id": "ocebot-8526f",
+    "storage_bucket": "ocebot-8526f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191716262966:android:1958c963ea78f8d0a50497",
+        "android_client_info": {
+          "package_name": "com.example.ocebot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191716262966-qftsit7ql02vn7b9e7btrporo6446o8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBASa2a4MWrwcQ8QRs5s6JW9bWwPgA7w2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191716262966-qftsit7ql02vn7b9e7btrporo6446o8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

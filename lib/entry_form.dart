@@ -20,6 +20,7 @@ class _EntryFormState extends State<EntryForm> {
 
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       backgroundColor: OcebotTheme.backgroundColor,
@@ -31,9 +32,12 @@ class _EntryFormState extends State<EntryForm> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => {
-            print("OK"),
-            Navigator.pop(context, 'OK'),
+          onPressed: () {
+            var snackbar = SnackBar(
+              content: Text('Added Entry: ${entryDateTime.toIso8601String().split('T').first} - ${entryWeight}${entryUnits}'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+            Navigator.pop(context, 'OK');
           },
           child: const Text('OK'),
         ),
