@@ -10,6 +10,65 @@ class OcebotTheme {
   static Color accentColor = Color(0xffC36F09);
   static Color textColor = Colors.black;
 
+  static List<BoxShadow> pixelShadow = [
+    BoxShadow(
+      color: OcebotTheme.tertiaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(-4, 1), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.tertiaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(4, 0), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.tertiaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(1, -4), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.tertiaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(0, 4), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.secondaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(-2, 1), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.secondaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(2, 0), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.secondaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(1, -2), // changes position of shadow
+    ),
+    BoxShadow(
+      color: OcebotTheme.secondaryColor,
+      spreadRadius: 0,
+      blurRadius: 0,
+      offset:
+          Offset(0, 2), // changes position of shadow
+    ),
+  ];
+
   static ThemeData get lightTheme 
   { //1
     return ThemeData( //2
@@ -32,6 +91,13 @@ class OcebotTheme {
         
       ),
       primaryTextTheme: TextTheme(
+        headlineLarge: GoogleFonts.vt323(
+          fontSize: 100,
+          color: primaryColor,
+          textStyle: TextStyle(
+            shadows: pixelShadow
+          )
+        ),
         headline1: GoogleFonts.vt323(
           fontSize: 40,
           color: primaryColor

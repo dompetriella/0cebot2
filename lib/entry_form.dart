@@ -1,26 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ocebot/themes.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EntryForm extends StatefulWidget {
-  const EntryForm({Key? key}) : super(key: key);
+// this is your state, equal to [state, setState], it's index 0
+final dataPointProvider = StateNotifierProvider<DataPointNotifier, DataPoint>(
+    (ref) => DataPointNotifier());
 
-  @override
-  State<EntryForm> createState() => _EntryFormState();
+// this is basically setState but as a class, notifier == setState ([state, setState], it's index 1)
+class DataPointNotifier extends StateNotifier<DataPoint> {
+  // the super is the initial state
+  DataPointNotifier() : super(DataPoint());
+
+  void changeWeight(String weight) {
+    DataPoint data = DataPoint();
+    data.entryDateTime = state.entryDateTime;
+    data.entryUnits = state.entryUnits;
+    data.entryWeight = weight;
+    state = data;
+  }
+
+  void changeUnits(String units) {
+    DataPoint data = DataPoint();
+    data.entryDateTime = state.entryDateTime;
+    data.entryUnits = units;
+    data.entryWeight = state.entryWeight;
+    state = data;
+  }
+
+  void changeDate(DateTime date) {
+    DataPoint data = DataPoint();
+    data.entryDateTime = date;
+    data.entryUnits = state.entryUnits;
+    data.entryWeight = state.entryWeight;
+    state = data;
+  }
+
+  void wipeData() {
+    DataPoint data = DataPoint();
+    data.entryDateTime = DateTime.now();
+    data.entryUnits = "g";
+    data.entryWeight = "";
+    state = data;
+  }
 }
 
-class _EntryFormState extends State<EntryForm> {
+class DataPoint {
   DateTime entryDateTime = DateTime.now();
   String entryWeight = "";
   String entryUnits = 'g';
+
+  static String formatDate(date) {
+    return date.toIso8601String().split('T').first;
+  }
+}
+
+class EntryForm extends ConsumerWidget {
   TextEditingController textEditingController = TextEditingController();
   double displayWidth = 350;
   double displayHeight = 200;
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       backgroundColor: OcebotTheme.backgroundColor,
@@ -29,18 +70,31 @@ class _EntryFormState extends State<EntryForm> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: GoogleFonts.vt323(),
+            textScaleFactor: 2,
+          ),
         ),
         TextButton(
           onPressed: () {
             var snackbar = SnackBar(
-              content: Text('Added Entry: ${entryDateTime.toIso8601String().split('T').first} - ${entryWeight}${entryUnits}'),
+              content: Text(
+                  'Added Entry: ${ref.read(dataPointProvider).entryWeight}${ref.read(dataPointProvider).entryUnits} on ${ref.read(dataPointProvider).entryDateTime}'),
             );
-            ScaffoldMessenger.of(context).showSnackBar(snackbar);
-            Navigator.pop(context, 'OK');
+            ref.watch(dataPointProvider).entryWeight.length > 0
+                ? {
+                    Navigator.pop(context, 'OK'),
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar)
+                  }
+                : null;
           },
-          child: const Text('OK'),
-        ),
+          child: Text(
+            'OK',
+            style: GoogleFonts.vt323(),
+            textScaleFactor: 2,
+          ),
+        )
       ],
       content: SizedBox(
         width: displayWidth,
@@ -77,9 +131,13 @@ class _EntryFormState extends State<EntryForm> {
                               firstDate: DateTime(2019),
                               lastDate: DateTime(2100))
                           .then((date) {
-                        setState(() {
-                          entryDateTime = date ?? DateTime.now();
-                        });
+                        date != null
+                            ? ref
+                                .watch(dataPointProvider.notifier)
+                                .changeDate(date)
+                            : ref
+                                .watch(dataPointProvider.notifier)
+                                .changeDate(DateTime.now());
                       });
                     },
                     child: Container(
@@ -87,68 +145,11 @@ class _EntryFormState extends State<EntryForm> {
                         decoration: BoxDecoration(
                             color: OcebotTheme.primaryColor,
                             shape: BoxShape.rectangle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: OcebotTheme.tertiaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(-4, 1), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.tertiaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(4, 0), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.tertiaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(1, -4), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.tertiaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(0, 4), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.secondaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(-2, 1), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.secondaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(2, 0), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.secondaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(1, -2), // changes position of shadow
-                              ),
-                              BoxShadow(
-                                color: OcebotTheme.secondaryColor,
-                                spreadRadius: 0,
-                                blurRadius: 0,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
-                              ),
-                            ]),
+                            boxShadow: OcebotTheme.pixelShadow),
                         child: Icon(
                           Icons.calendar_month_rounded,
                           color: OcebotTheme.backgroundColor,
-                            )),
+                        )),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(12, 8, 2, 12),
@@ -160,9 +161,10 @@ class _EntryFormState extends State<EntryForm> {
                         textAlign: TextAlign.center,
                         controller: textEditingController,
                         onChanged: (text) {
-                          setState(() {
-                            entryWeight = text;
-                          });
+                          ref
+                              .watch(dataPointProvider.notifier)
+                              .changeWeight(text);
+                          print(ref.read(dataPointProvider).entryWeight);
                         },
                       ),
                     ),
@@ -178,28 +180,18 @@ class _EntryFormState extends State<EntryForm> {
   }
 }
 
-class UnitsDropDown extends StatefulWidget {
-  const UnitsDropDown({Key? key}) : super(key: key);
-
+class UnitsDropDown extends ConsumerWidget {
   @override
-  State<UnitsDropDown> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<UnitsDropDown> {
-  String dropdownValue = 'g';
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DropdownButton<String>(
       focusColor: Colors.transparent,
-      value: dropdownValue,
+      value: ref.watch(dataPointProvider).entryUnits,
       elevation: 16,
       style: GoogleFonts.vt323(fontSize: 25, color: OcebotTheme.primaryColor),
       underline: Container(height: 10, color: Colors.transparent),
       onChanged: (String? entryUnits) {
-        setState(() {
-          dropdownValue = entryUnits!;
-        });
+        ref.watch(dataPointProvider.notifier).changeUnits(entryUnits!);
+        print(ref.read(dataPointProvider).entryUnits);
       },
       items: <String>['g', 'kg', 'lbs', 'oz']
           .map<DropdownMenuItem<String>>((String value) {
