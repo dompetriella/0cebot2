@@ -1,123 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:ocebot/firebase_options.dart';
+import 'package:ocebot/providers/auth_provider.dart';
 import 'themes.dart';
-import 'entry_form.dart';
+import 'pages/entry_form.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'pages/main_page.dart';
+import 'pages/auth_checker.dart';
+import 'pages/loading_screen.dart';
+import 'pages/error_screen.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+final firebaseInitializerProvider = FutureProvider<FirebaseApp>((ref) async {
+  return await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+});
+
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final inititalize = ref.watch(firebaseInitializerProvider);
+    final data = ref.watch(fireBaseAuthProvider);
+    final _auth = ref.watch(authenticationProvider);
+    
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Ocebot',
       theme: OcebotTheme.lightTheme,
-      home: AuthenticationWrapper(),
-    );
-  }
-}
-
-class AuthenticationWrapper extends StatelessWidget {
-  const AuthenticationWrapper({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: OcebotTheme.primaryColor,
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: OcebotTheme.pixelShadow
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(40.0, 100, 40, 100),
-              child: SizedBox(
-                height: 350,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Ocebot",
-                      style: OcebotTheme.lightTheme.primaryTextTheme.headlineLarge,
-                    ),
-                    Image.asset(
-                      'assets/images/Ocelot-export.png',
-                      ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        textStyle: OcebotTheme.lightTheme.primaryTextTheme.displayMedium,
-                        fixedSize: Size(250, 50),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                        );
-                      },
-                      child: Text("Sign In"))
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+      home: inititalize.when(
+        data: (data) {
+          return AuthChecker();
+        },
+        loading: () => const LoadingScreen(),
+        error: (e, stackTrace) => ErrorScreen(e, stackTrace)
       ),
     );
   }
 }
 
-class MainPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-          title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle, color: OcebotTheme.accentColor),
-            ),
-          ),
-          Text("Ocebot"),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle, color: OcebotTheme.accentColor),
-            ),
-          ),
-        ],
-      )),
-      body: Center(
-        child: Text("No Data Yet!",
-          style: OcebotTheme.lightTheme.primaryTextTheme.headline1)
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(),
-        onPressed: () => showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) => EntryForm()),
-        tooltip: 'Create New Entry',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
