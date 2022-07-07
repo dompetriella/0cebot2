@@ -25,7 +25,6 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inititalize = ref.watch(firebaseInitializerProvider);
-    final data = ref.watch(fireBaseAuthProvider);
     final _auth = ref.watch(authenticationProvider);
     
     return MaterialApp(

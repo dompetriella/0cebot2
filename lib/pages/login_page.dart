@@ -59,7 +59,7 @@ class LoginScreen extends ConsumerWidget {
                             fixedSize: Size(250, 50),
                           ),
                           onPressed: () {
-                            _loginWithGoogle();
+                            // _loginWithGoogle();
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => MainPage()),
