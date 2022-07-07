@@ -92,7 +92,7 @@ class OcebotTheme {
       ),
       primaryTextTheme: TextTheme(
         headlineLarge: GoogleFonts.vt323(
-          fontSize: 100,
+          fontSize: 80,
           color: primaryColor,
           textStyle: TextStyle(
             shadows: pixelShadow

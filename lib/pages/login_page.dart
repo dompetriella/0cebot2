@@ -36,8 +36,8 @@ class LoginScreen extends ConsumerWidget {
             child: Container(
               decoration: BoxDecoration(boxShadow: OcebotTheme.pixelShadow),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(screenWidth * .20,
-                    screenHeight * .20, screenWidth * .20, screenHeight * .20),
+                padding: EdgeInsets.fromLTRB(
+                  screenWidth * .1, screenHeight * .20, screenWidth * .10, screenHeight * .20),
                 child: SizedBox(
                   height: 350,
                   child: Column(
@@ -59,7 +59,7 @@ class LoginScreen extends ConsumerWidget {
                             fixedSize: Size(250, 50),
                           ),
                           onPressed: () {
-                            // _loginWithGoogle();
+                            _loginWithGoogle();
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => MainPage()),
