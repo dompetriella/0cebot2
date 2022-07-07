@@ -9,6 +9,7 @@ import 'pages/main_page.dart';
 import 'pages/auth_checker.dart';
 import 'pages/loading_screen.dart';
 import 'pages/error_screen.dart';
+import 'providers/auth_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
